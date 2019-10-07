@@ -1,23 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Ion Phaser
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <div class="ion-padding">
-    <p>Phaser configurado :D</p>
+
     <ng-container *ngIf="!initialize">
       <ion-button (click)="initializeGame()" class="flex">
         Empezar
       </ion-button>
     </ng-container>
-    <ion-phaser [game]="game" [initialize]="initialize"></ion-phaser>
+    <ion-phaser [game]="game" [initialize]="initialize">
+  
+    </ion-phaser>
     <ion-button *ngIf="initialize" (click)="changeAngle()" class="flex bottom-button">
       Empezar de nuevo
     </ion-button>
-
-  </div>
 </ion-content>
