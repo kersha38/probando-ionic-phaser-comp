@@ -7,7 +7,7 @@ const SCENES = {
   SECOND: 'SecondScene'
 };
 
-class CommonScene extends Phaser.Scene {
+export class CommonScene extends Phaser.Scene {
   helloWorld: Phaser.GameObjects.Text;
   player: Phaser.Physics.Arcade.Sprite;
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
