@@ -16,6 +16,12 @@ export class ReglaTresPage {
     height: 581,
     backgroundColor: 0x000000,
     scene: [Escena1],
+    physics: {
+      default: 'arcade',
+      arcade: {
+        debug: false,
+      }
+    },
     instance: null,
   };
 

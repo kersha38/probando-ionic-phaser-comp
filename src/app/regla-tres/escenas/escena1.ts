@@ -22,6 +22,13 @@ export class Escena1 extends Phaser.Scene {
             frameHeight: 32,
             endFrame: 12,
         });
+
+        this.load.image('burbuja', '../../../assets/imagenes/bubble.png');
+
+        this.load.spritesheet('burbuja-x', '../../../assets/imagenes/bubble-explosion.png', {
+            frameWidth: 236,
+            frameHeight: 259,
+        });
     }
 
     create() {
@@ -46,6 +53,14 @@ export class Escena1 extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('pez-amarillo', {start: 3, end: 5}),
             frameRate: 10,
             repeat: -1,
+        });
+
+        this.anims.create({
+            key: 'explosionBurbuja',
+            frames: this.anims.generateFrameNumbers('burbuja-x', {start: 0, end: 3}),
+            frameRate: 20,
+            repeat: 0,
+            hideOnComplete: true,
         });
 
 
