@@ -29,6 +29,8 @@ export class Escena1 extends Phaser.Scene {
             frameWidth: 236,
             frameHeight: 259,
         });
+
+        this.load.bitmapFont('font', '../../../assets/font/font.png', '../../../assets/font/font.fnt');
     }
 
     create() {

@@ -10,6 +10,8 @@ export class Escena2 extends Phaser.Scene {
     burbuja;
     explosionBurbuja;
     burbujasGrupo;
+    scoreTitulo;
+    score;
 
     create() {
         const anchoJuego = (this.game.config.width) as number;
@@ -17,6 +19,9 @@ export class Escena2 extends Phaser.Scene {
         this.background = this.add.tileSprite(0, 0, anchoJuego, altoJUego, 'fondo-oceano');
         this.background.setOrigin(0, 0);
         this.background.alpha = 0.75;
+
+        this.score = 0;
+        this.scoreTitulo = this.add.bitmapText(anchoJuego - 200, 25, 'font', 'PUNTAJE', 25);
 
         this.add.text(300, 0, 'Inicio - escena 2', {
             font: '25px Arial',
@@ -38,7 +43,7 @@ export class Escena2 extends Phaser.Scene {
         this.burbujasGrupo = this.physics.add.group();
 
         for (let i = 0; i < 6; i++) {
-            const burbuja = this.physics.add.image(50, 50, 'burbuja')
+            const burbuja = this.physics.add.sprite(50, 50, 'burbuja')
                 .setScale(3)
                 .setInteractive();
             this.burbujasGrupo.add(burbuja);
@@ -49,6 +54,10 @@ export class Escena2 extends Phaser.Scene {
 
             burbuja.on('pointerdown', (pointer) => {
                 console.log('hi bubble' + i);
+                burbuja.setTexture('burbuja-x');
+                burbuja.play('explosionBurbuja');
+                this.score += 55;
+                this.scoreTitulo.text = 'PUNTAJE ' + this.score;
             });
         }
 
@@ -60,6 +69,8 @@ export class Escena2 extends Phaser.Scene {
             console.log('click-1');
             gameObject.emit('clicked', gameObject);
         }, this);*/
+
+
     }
 
     update(time: number, delta: number): void {
