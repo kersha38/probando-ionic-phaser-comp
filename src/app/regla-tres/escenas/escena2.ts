@@ -38,13 +38,18 @@ export class Escena2 extends Phaser.Scene {
         this.burbujasGrupo = this.physics.add.group();
 
         for (let i = 0; i < 6; i++) {
-            const burbuja = this.physics.add.image(50, 50, 'burbuja').setScale(1.5);
+            const burbuja = this.physics.add.image(50, 50, 'burbuja')
+                .setScale(3)
+                .setInteractive();
             this.burbujasGrupo.add(burbuja);
             burbuja.setRandomPosition(500, 500, anchoJuego, altoJUego);
             burbuja.setVelocity(150, 100);
             burbuja.setCollideWorldBounds(true);
             burbuja.setBounce(1);
-            // burbuja.setInteractive();
+
+            burbuja.on('pointerdown', (pointer) => {
+                console.log('hi bubble' + i);
+            });
         }
 
         this.physics.add.collider(this.burbujasGrupo, this.burbujasGrupo);
