@@ -12,6 +12,10 @@ export class CommonScene extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
+  constructor() {
+    super({key: 'common'});
+  }
+
   init() {
     this.cameras.main.setBackgroundColor('#24252A');
   }
@@ -20,10 +24,11 @@ export class CommonScene extends Phaser.Scene {
     this.load.spritesheet('dude', '../../assets/Woman_Walk.png', { frameWidth: 22, frameHeight: 32 });
     this.load.spritesheet('dude-izq', '../../assets/Woman_Walk-izq.png', { frameWidth: 22, frameHeight: 32 });
     this.load.spritesheet('quieta', '../../assets/Woman_Idle.png', { frameWidth: 22, frameHeight: 32 });
+    console.log('preload common');
+    console.log(this.anims);
   }
 
   create() {
-
 
     this.helloWorld = this.add.text(
       this.cameras.main.centerX,
@@ -73,6 +78,9 @@ export class CommonScene extends Phaser.Scene {
     this.input.keyboard.on('keyup_D', () => {
       console.log('ola k ase');
     }, this);
+
+    console.log('create common');
+    console.log(this.anims);
   }
 
   setAngle(angle: number) {

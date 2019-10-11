@@ -10,6 +10,10 @@ class JuegoPrincipal extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
+  constructor() {
+    super({key: 'juegoPrincipal'});
+  }
+
   preload() {
 
     this.load.tilemapTiledJSON('tile', '../../assets/historia.json');
@@ -33,11 +37,12 @@ class JuegoPrincipal extends Phaser.Scene {
     casas.setCollisionByProperty({ colision: true });
     cerradruas.setCollisionByProperty({ colision: true});
 
-    const inicio: Phaser.GameObjects.GameObject = map.findObject('lugares', obj => obj.name === 'inicio');
+    const inicio: Phaser.GameObjects.GameObject| any = map.findObject('lugares', obj => obj.name === 'inicio');
+    console.log(inicio);
 
     this.player = this.physics.add.sprite(
-      40,
-      40,
+      inicio.x,
+      inicio.y,
       'sprite'
     );
 
@@ -82,7 +87,16 @@ class JuegoPrincipal extends Phaser.Scene {
     this.physics.add.collider(this.player, casas);
 
     this.physics.add.collider(this.player, cerradruas, () => {
+      this.scene.setActive(false);
+      this.anims.remove('left');
+      this.anims.remove('right');
+      this.anims.remove('turn');
+      console.log(this.anims);
       this.scene.add('another', CommonScene, true);
+    
+      // this.scene.start('juegoPrincipal');
+      this.scene.switch('juegoPrincipal');
+      // this.scene.start('another');
     });
 
     const camera = this.cameras.main;
@@ -146,7 +160,7 @@ export class MovimientoAnimacionPage implements OnInit {
     width: '100%',
     height: '100%',
     type: Phaser.AUTO,
-    scene: JuegoPrincipal,
+    scene: [JuegoPrincipal],
     physics: {
       default: 'arcade',
       arcade: {
