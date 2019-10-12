@@ -157,8 +157,11 @@ export class MovimientoAnimacionPage implements OnInit {
   initialize: boolean;
 
   game: GameConfig = {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
+    // height: '100%',
+    scale: {
+      mode: Phaser.Scale.FIT
+    },
     type: Phaser.AUTO,
     scene: [JuegoPrincipal],
     physics: {
