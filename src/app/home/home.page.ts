@@ -81,6 +81,10 @@ export class CommonScene extends Phaser.Scene {
 
     console.log('create common');
     console.log(this.anims);
+
+    this.input.on('pointermove', () => {
+      console.log('detecto al mouse');
+    });
   }
 
   setAngle(angle: number) {

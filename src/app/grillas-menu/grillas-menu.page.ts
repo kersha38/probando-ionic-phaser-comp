@@ -9,6 +9,13 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
   width;
   height;
   opciones: any[] = [];
+  ostra;
+  bolsa;
+  perla;
+  bolsaTexto: Phaser.GameObjects.Text;
+  totalAciertos = 0;
+  visto: Phaser.GameObjects.Image;
+  equis: Phaser.GameObjects.Image;
 
   constructor() {
     super({
@@ -20,12 +27,21 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
     this.load.tilemapTiledJSON('map', '../../assets/Recolectando perlas/prueba-perlas.json');
     this.load.spritesheet('tile-peces', '../../assets/Recolectando perlas/fishTilesheet.png', { frameHeight: 64, frameWidth: 64 });
     this.load.spritesheet('ostra', '../../assets/Recolectando perlas/ostra.png', { frameHeight: 48, frameWidth: 50 });
-    // this.load.bitmapFont('font', '../../assets/Recolectando perlas/Drift.ttf');
+    this.load.image('bolsa', '../../assets/Recolectando perlas/bag.png');
+    this.load.image('perla', '../../assets/Recolectando perlas/perla.png');
+    this.load.image('check', '../../assets/Recolectando perlas/checkmark2.png');
+    this.load.image('cross', '../../assets/Recolectando perlas/cross2.png');
+
     this.width = this.game.config.width;
     this.height = this.game.config.height;
+
+    this.load.audio('acierto', '../../assets/Recolectando perlas/tada.wav');
+    this.load.audio('desacierto', '../../assets/Recolectando perlas/negative.wav');
+    this.load.audio('musica-fondo', '../../assets/Recolectando perlas/TylerSong3_Normal.wav');
   }
 
   create() {
+    this.sound.play('musica-fondo', {volume: 0.3, loop: true});
 
     const mapa = this.make.tilemap({ key: 'map' });
     const tileset = mapa.addTilesetImage('fishTilesheet', 'tile-peces');
@@ -40,35 +56,37 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
     this.burbuja = this.add.sprite(250, 576, 'tile-peces', 123).setAlpha(0.5);
     this.burbuja2 = this.add.sprite(650, 200, 'tile-peces', 123).setAlpha(0.5);
 
+    this.ostra = this.add.sprite(this.width / 2, this.height / 2, 'ostra', 0)
+      .setDepth(10)
+      .setScale(3);
+
+    this.bolsa = this.physics.add.image(950, 500, 'bolsa');
+    this.bolsaTexto = this.add.text(950, 480, this.totalAciertos.toString(), { fontSize: 50, });
+
+    this.perla = this.physics.add.image(this.width / 2, this.height / 2, 'perla')
+      .setDepth(12)
+      .setScale(0.25)
+      .setVisible(false);
+
+
+    this.visto = this.add.image(0, 0, 'check').setVisible(false);
+    this.equis = this.add.image(0, 0, 'cross').setVisible(false);
+
     // opciones provicionales
-    const opcionesBD: {opcion: string, esCorrecta: boolean}[] = [
-      {opcion: 'aceite de oliva insaturado', esCorrecta: false},
-      {opcion: 'beta-carotenas de tomates', esCorrecta: true},
-      {opcion: 'papas transgenicas que soportan heladas', esCorrecta: false},
-      {opcion: 'remolacha rica en fructuosa', esCorrecta: false},
+    const opcionesBD: { opcion: string, esCorrecta: boolean }[] = [
+      { opcion: 'aceite de oliva \ninsaturado', esCorrecta: false },
+      { opcion: 'beta-carotenas de \ntomates', esCorrecta: true },
+      { opcion: 'papas transgenicas \nque  soportan heladas', esCorrecta: false },
+      { opcion: 'remolacha rica en \nfructuosa', esCorrecta: false },
     ];
 
-    opcionesBD.forEach((respuesta, i) => {
-      const grupo = this.add.group();
-      const posX = (this.width / 3) * (i);
-      const posY = (this.height / 5);
-      const ostra = this.add.sprite(posX, posY, 'ostra', 0);
-      ostra.on('pointerdown', () => {
-        ostra.anims.play('abrir-ostra-correcta');
-      });
-      // grupo.create(posX, posY, 'ostra', 0);
-      grupo.add(ostra);
-      const texto = this.add.text(posX , posY + 30, respuesta.opcion, { color: '#190D2D' });
-      // texto.setShadow(2, 2, "#333333", 2, false, true);
-      texto.setData({esCorrecta: respuesta.esCorrecta});
-      texto.setInteractive(
-        new Phaser.Geom.Rectangle(0, 0, texto.width, texto.height),
-        () => { ostra.anims.play('abrir-ostra-correcta');}
-        );
-      grupo.add(texto);
-      grupo.getChildren
-      this.opciones.push(grupo);
-    });
+
+
+    this.opciones.push(this.crearOpcion(200, 160, opcionesBD[0]));
+    this.opciones.push(this.crearOpcion(600, 160, opcionesBD[1]));
+    this.opciones.push(this.crearOpcion(200, 400, opcionesBD[2]));
+    this.opciones.push(this.crearOpcion(600, 400, opcionesBD[3]));
+
 
 
 
@@ -134,21 +152,32 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
 
     const pregunta = this.add.text(
       100,
-      25,
+      30,
       '1) ¿Cuál es una buena fuente de vitamina A?',
-      { fontFamily: 'Drift', fontSize: 40, color: '#c51b7d'});
+      { fontFamily: 'Drift', fontSize: 40, color: '#c51b7d' });
     console.log('estas son las simensiones: ' + this.width + ' y ' + this.height);
 
-    pregunta.setShadow(2, 2, "#333333", 2, false, true);
+    pregunta.setShadow(2, 2, '#333333', 2, false, true);
 
     this.anims.create({
       key: 'abrir-ostra-correcta',
       frames: this.anims.generateFrameNumbers('ostra', { start: 0, end: 4 }),
       frameRate: 5,
-      repeat: -1,
+      // repeat: -1,
     });
 
-    // ostra.anims.play('abrir-ostra-correcta');
+    this.ostra.on(
+      'animationcomplete',
+      () => {
+        this.perla.setVisible(true);
+        this.physics.moveToObject(this.perla, this.bolsa, 250);
+
+      }
+    );
+
+    this.input.on('gameobjectup', (pointer, gameObject) => {
+      gameObject.emit('clicked', gameObject);
+    }, this);
 
   }
 
@@ -165,6 +194,55 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
     if (this.burbuja2.y < 0) {
       this.burbuja2.y = 576;
     }
+
+    const distance = Phaser.Math.Distance.Between(this.perla.x, this.perla.y, this.bolsa.x, this.bolsa.y);
+
+    if (this.perla.body.speed > 0) {
+
+      //  4 is our distance tolerance, i.e. how close the source can get to the target
+      //  before it is considered as being there. The faster it moves, the more tolerance is required.
+      if (distance < 4) {
+        this.perla.body.reset(this.bolsa.x, this.bolsa.y);
+        this.perla.setVisible(false);
+        this.totalAciertos += 1;
+        this.bolsaTexto.setText(this.totalAciertos.toString());
+      }
+    }
+  }
+
+  crearOpcion(posX, posY, respuesta) {
+    const grupo = this.add.group();
+    const rect = this.add.rectangle(posX + 120, posY + 30, 300, 100, 0xffffff);
+    rect.setStrokeStyle(20, 0x43665a, 0.5);
+
+    const texto = this.add.text(posX, posY, respuesta.opcion, { fontSize: 20, color: '#190D2D' }).setDepth(10);
+
+    texto.setData({ esCorrecta: respuesta.esCorrecta });
+    texto.setInteractive();
+
+    texto.on(
+      'pointerdown',
+      () => {
+        rect.setStrokeStyle(25, 0x6D4B9A, 1);
+        if (respuesta.esCorrecta) {
+          this.ostra.anims.play('abrir-ostra-correcta');
+          this.sound.play('acierto', {volume: 1});
+          this.visto.setPosition(posX + 250, posY)
+          .setDepth(20)
+          .setVisible(true);
+        } else {
+          this.equis.setPosition(posX + 250, posY)
+          .setDepth(20)
+          .setVisible(true);
+
+          this.sound.play('desacierto');
+        }
+      },
+      this
+    );
+
+    grupo.add(texto);
+    return grupo;
   }
 
 
@@ -193,7 +271,8 @@ export class GrillasMenuPage implements OnInit {
           y: 0
         },
         debug: false,
-      }
+      },
+      default: 'arcade',
     },
 
 
