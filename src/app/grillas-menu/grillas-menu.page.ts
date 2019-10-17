@@ -35,7 +35,7 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
     this.width = this.game.config.width;
     this.height = this.game.config.height;
 
-    this.load.audio('acierto', '../../assets/Recolectando perlas/tada.wav');
+    this.load.audio('acierto', '../../assets/Recolectando perlas/success.wav');
     this.load.audio('desacierto', '../../assets/Recolectando perlas/negative.wav');
     this.load.audio('musica-fondo', '../../assets/Recolectando perlas/TylerSong3_Normal.wav');
   }
@@ -263,6 +263,7 @@ export class GrillasMenuPage implements OnInit {
       width: 1024,
       height: 576
     },
+
     type: Phaser.AUTO,
     scene: JuegoRecolectandoPerlas,
     physics: {
