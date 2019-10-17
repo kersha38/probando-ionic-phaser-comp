@@ -1,5 +1,7 @@
 {
   "name": "probando-ionic-phaser-comp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
