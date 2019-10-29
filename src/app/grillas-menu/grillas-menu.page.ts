@@ -179,6 +179,7 @@ class JuegoRecolectandoPerlas extends Phaser.Scene {
       gameObject.emit('clicked', gameObject);
     }, this);
 
+    this.cameras.main.setRoundPixels(true);
   }
 
   update() {
@@ -260,6 +261,7 @@ export class GrillasMenuPage implements OnInit {
   gameConfig: Phaser.Types.Core.GameConfig = {
     scale: {
       mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH,
       width: 1024,
       height: 576
     },

@@ -26,6 +26,7 @@ class JuegoPrincipal extends Phaser.Scene {
 
   create() {
     const map: Phaser.Tilemaps.Tilemap = this.make.tilemap({ key: 'tile'});
+    console.log(map);
 
     const tileSetPrincipal: Phaser.Tilemaps.Tileset = map.addTilesetImage('tilseset', 'tileSetPrincipal');
     const tileSetSecondary: Phaser.Tilemaps.Tileset = map.addTilesetImage('things', 'tileSetSecondary');
