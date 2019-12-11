@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'grillas-menu', loadChildren: './grillas-menu/grillas-menu.module#GrillasMenuPageModule' },
   { path: 'movimiento-animacion', loadChildren: './movimiento-animacion/movimiento-animacion.module#MovimientoAnimacionPageModule' },
   { path: 'combinado', loadChildren: './combinado/combinado.module#CombinadoPageModule' },
+  { path: 'mostrando', loadChildren: './mostrando/mostrando.module#MostrandoPageModule' },
 ];
 
 @NgModule({

@@ -94,7 +94,7 @@ class JuegoPrincipal extends Phaser.Scene {
       this.anims.remove('turn');
       console.log(this.anims);
       this.scene.add('another', CommonScene, true);
-    
+
       // this.scene.start('juegoPrincipal');
       this.scene.switch('juegoPrincipal');
       // this.scene.start('another');

@@ -4,8 +4,14 @@ interface GameConfig extends Phaser.Types.Core.GameConfig {
     instance: Phaser.Game;
 }
 
-interface Sprite extends Phaser.Physics.Arcade.Factory {}
+interface Sprite extends Phaser.Physics.Arcade.Factory {
+    x: number|string;
+}
 
-interface Tilemap extends Phaser.Tilemaps.Tilemap {}
+interface Tilemap extends Phaser.Tilemaps.Tilemap {
+    x: number|string;
+}
 
-interface Tileset extends Phaser.Tilemaps.Tileset{}
+interface Tileset extends Phaser.Tilemaps.Tileset {
+    x: number|string;
+}
