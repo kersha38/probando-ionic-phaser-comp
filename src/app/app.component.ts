@@ -22,7 +22,11 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+      // try {
+      //   this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+      // } catch (e) {
+      //   console.error(e);
+      // }
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

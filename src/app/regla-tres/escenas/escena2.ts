@@ -74,7 +74,7 @@ export class Escena2 extends Phaser.Scene {
     }
 
     update(time: number, delta: number): void {
-        this.background.tilePositionX -= 0.3;
+        this.background.tilePositionY -= 0.7;
         this.moverPez(this.pezRojo, 1, 'derecha');
         this.moverPez(this.pezCafe, 0.5, 'izquierda');
         this.moverPez(this.pezAmarillo, 0.8, 'izquierda');
@@ -103,3 +103,5 @@ export class Escena2 extends Phaser.Scene {
         // burbuja.play('explosionBurbuja');
     }
 }
+
+// TODO ALGO
